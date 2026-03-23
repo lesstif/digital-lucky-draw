@@ -1,9 +1,13 @@
 # 의존성
 node_modules/
 
-# Vite 빌드 결과물
+# Vite 빌드 결과물 및 캐시
 dist/
 dist-ssr/
+.vite/
+
+# 테스트 커버리지
+coverage/
 
 # 로컬 환경 변수
 .env
@@ -22,9 +26,17 @@ dist-ssr/
 # OS
 .DS_Store
 Thumbs.db
+**/.DS_Store
+
+# 서버 런타임 데이터 (서버 시작 시 자동 생성)
+data/
+
+# 경품 설정 (현장마다 다름 — prizes.json.example 을 복사해서 사용)
+public/prizes.json
 
 # 로그
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+*.log

@@ -19,11 +19,28 @@ if (!ADMIN_PASSWORD) {
 
 mkdirSync(DATA_DIR, { recursive: true });
 
+// ── 시작 전 필수 파일 확인 ───────────────────────────────────
+
+if (!existsSync(PRIZES_FILE)) {
+  console.error('');
+  console.error('[오류] public/prizes.json 파일이 없습니다.');
+  console.error('  예제 파일을 복사한 뒤 경품 목록을 설정하세요:');
+  console.error('  cp public/prizes.json.example public/prizes.json');
+  console.error('');
+  process.exit(1);
+}
+
 // ── 상태 관리 ────────────────────────────────────────────────
 
 function loadMasterPrizes() {
-  const data = JSON.parse(readFileSync(PRIZES_FILE, 'utf-8'));
-  return data.map((p) => ({ ...p, remain: p.total }));
+  try {
+    const data = JSON.parse(readFileSync(PRIZES_FILE, 'utf-8'));
+    return data.map((p) => ({ ...p, remain: p.total }));
+  } catch (e) {
+    console.error('[오류] public/prizes.json 파싱 실패:', e.message);
+    console.error('  JSON 형식이 올바른지 확인하세요.');
+    process.exit(1);
+  }
 }
 
 function loadState() {

@@ -1,11 +1,8 @@
-export default function HistoryPage({ history, onReset }) {
+export default function HistoryPage({ history }) {
   return (
     <div style={styles.page}>
       <div style={styles.header}>
         <h2 style={styles.title}>당첨 이력</h2>
-        <button style={styles.resetBtn} onClick={onReset}>
-          관리자 리셋
-        </button>
       </div>
 
       {history.length === 0 ? (
@@ -37,26 +34,12 @@ const styles = {
     overflow: 'hidden',
   },
   header: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
     flexShrink: 0,
   },
   title: {
     fontSize: '22px',
     fontWeight: '700',
     color: '#ffffff',
-  },
-  resetBtn: {
-    background: 'rgba(231,76,60,0.15)',
-    border: '1px solid rgba(231,76,60,0.4)',
-    borderRadius: '10px',
-    color: '#e74c3c',
-    fontSize: '14px',
-    padding: '8px 20px',
-    cursor: 'pointer',
-    touchAction: 'manipulation',
-    WebkitTapHighlightColor: 'transparent',
   },
   emptyWrap: {
     flex: 1,

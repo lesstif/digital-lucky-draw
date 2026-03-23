@@ -16,7 +16,13 @@ cp .env.example .env
 ```
 `.env` 파일을 열어 `ADMIN_PASSWORD`를 원하는 비밀번호로 변경합니다.
 
-**3. 개발 서버 실행**
+**3. 경품 목록 설정**
+```bash
+cp public/prizes.json.example public/prizes.json
+```
+`public/prizes.json` 파일을 열어 실제 경품 목록을 설정합니다. (아래 [경품 목록 설정](#경품-목록-설정) 참고)
+
+**4. 개발 서버 실행**
 ```bash
 npm run dev
 ```
@@ -25,7 +31,14 @@ npm run dev
 
 ## 경품 목록 설정
 
-`public/prizes.json` 파일을 수정합니다. **빌드 없이** 파일 저장 후 새로고침하면 반영됩니다.
+`public/prizes.json`은 **git에서 제외**되어 있습니다. 이벤트 장소마다 독립적으로 관리하기 위해서입니다.
+예제 파일을 복사한 뒤 수정하세요.
+
+```bash
+cp public/prizes.json.example public/prizes.json
+```
+
+파일 저장 후 서버를 재시작하면 반영됩니다. (`prizes.json`이 없으면 서버가 시작되지 않습니다.)
 
 ```json
 [
