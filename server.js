@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync, copyFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
@@ -8,8 +8,8 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 app.use(express.json());
 
-const PRIZES_FILE    = join(__dirname, 'public', 'prizes.json');
 const DATA_DIR       = join(__dirname, 'data');
+const PRIZES_FILE    = join(__dirname, 'data', 'prizes.json');
 const STATE_FILE     = join(__dirname, 'data', 'state.json');
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
@@ -22,12 +22,21 @@ mkdirSync(DATA_DIR, { recursive: true });
 // ── 시작 전 필수 파일 확인 ───────────────────────────────────
 
 if (!existsSync(PRIZES_FILE)) {
-  console.error('');
-  console.error('[오류] public/prizes.json 파일이 없습니다.');
-  console.error('  예제 파일을 복사한 뒤 경품 목록을 설정하세요:');
-  console.error('  cp public/prizes.json.example public/prizes.json');
-  console.error('');
-  process.exit(1);
+  const EXAMPLE_FILE = join(__dirname, 'public', 'prizes.json.example');
+  if (existsSync(EXAMPLE_FILE)) {
+    copyFileSync(EXAMPLE_FILE, PRIZES_FILE);
+    console.warn('');
+    console.warn('[안내] data/prizes.json이 없어 prizes.json.example을 자동으로 복사했습니다.');
+    console.warn('  실제 경품 목록에 맞게 data/prizes.json을 수정하세요.');
+    console.warn('');
+  } else {
+    console.error('');
+    console.error('[오류] data/prizes.json 파일이 없습니다.');
+    console.error('  예제 파일을 복사한 뒤 경품 목록을 설정하세요:');
+    console.error('  cp public/prizes.json.example data/prizes.json');
+    console.error('');
+    process.exit(1);
+  }
 }
 
 // ── 상태 관리 ────────────────────────────────────────────────
