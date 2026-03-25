@@ -115,6 +115,34 @@ app.post('/api/draw', (req, res) => {
   res.json({ winner, entry });
 });
 
+// 경품 목록 수정 (관리자)
+app.post('/api/prizes/update', (req, res) => {
+  if (!ADMIN_PASSWORD) {
+    return res.status(503).json({ error: '서버에 ADMIN_PASSWORD가 설정되지 않았습니다.' });
+  }
+  const { password, prizes: newPrizes } = req.body;
+  if (password !== ADMIN_PASSWORD) {
+    return res.status(401).json({ error: '비밀번호가 틀렸습니다.' });
+  }
+  if (!Array.isArray(newPrizes) || newPrizes.length === 0) {
+    return res.status(400).json({ error: '경품 목록이 비어 있습니다.' });
+  }
+
+  // data/prizes.json 업데이트 (id, name, total만 저장)
+  const prizeData = newPrizes.map(({ id, name, total }) => ({ id, name, total }));
+  writeFileSync(PRIZES_FILE, JSON.stringify(prizeData, null, 2), 'utf-8');
+
+  // 기존 잔여 수량 보존 (total이 줄었으면 remain도 cap)
+  state.prizes = newPrizes.map((p) => {
+    const existing = state.prizes.find((ep) => ep.id === p.id);
+    const remain   = existing ? Math.min(existing.remain, p.total) : p.total;
+    return { id: p.id, name: p.name, total: p.total, remain };
+  });
+  saveState(state);
+
+  res.json({ ok: true, prizes: state.prizes });
+});
+
 // 초기화 (관리자)
 app.post('/api/reset', (req, res) => {
   if (!ADMIN_PASSWORD) {

@@ -121,6 +121,12 @@ export default function App() {
                   setDisplayName('');
                   setShowConfetti(false);
                 }}
+                onPrizesUpdate={(prizes) => {
+                  setPrizes(prizes);
+                  setWinner(null);
+                  setDisplayName('');
+                  setShowConfetti(false);
+                }}
               />
             }
           />
