@@ -10,12 +10,25 @@ html, body, #root {
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
-  background: linear-gradient(160deg, #0d0d2b 0%, #1a1042 50%, #0d1b4b 100%);
+  background: #07071a;
   min-height: 100vh;
   color: #ffffff;
   -webkit-tap-highlight-color: transparent;
   user-select: none;
   overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 15% 15%, rgba(108,40,255,0.22) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 80%, rgba(20,80,220,0.18) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 100%, rgba(247,201,72,0.07) 0%, transparent 45%),
+    linear-gradient(170deg, #0d0d2b 0%, #0a0d35 55%, #07071a 100%);
+  z-index: -1;
+  pointer-events: none;
 }
 
 @keyframes fall {
@@ -24,22 +37,57 @@ body {
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(247,201,72,0.4), 0 0 40px rgba(247,201,72,0.2); }
-  50%       { box-shadow: 0 0 50px rgba(247,201,72,0.9), 0 0 100px rgba(247,201,72,0.4); }
+  0%, 100% {
+    box-shadow:
+      0 0 30px rgba(247,201,72,0.5),
+      0 0 60px rgba(247,201,72,0.25),
+      inset 0 0 30px rgba(247,201,72,0.05);
+  }
+  50% {
+    box-shadow:
+      0 0 60px rgba(247,201,72,1),
+      0 0 120px rgba(247,201,72,0.5),
+      inset 0 0 40px rgba(247,201,72,0.1);
+  }
+}
+
+@keyframes orbit {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-5px); }
 }
 
 @keyframes cycle-flash {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.3; }
+  0%, 100% { opacity: 1; transform: scale(1.02); }
+  50%       { opacity: 0.25; transform: scale(0.98); }
 }
 
 @keyframes winner-pop {
-  0%   { transform: scale(0.4); opacity: 0; }
-  70%  { transform: scale(1.1); }
+  0%   { transform: scale(0.3); opacity: 0; }
+  60%  { transform: scale(1.08); }
+  80%  { transform: scale(0.97); }
   100% { transform: scale(1);   opacity: 1; }
+}
+
+@keyframes winner-glow {
+  0%, 100% { text-shadow: 0 0 30px rgba(247,201,72,0.9), 0 0 60px rgba(247,201,72,0.4); }
+  50%       { text-shadow: 0 0 60px rgba(247,201,72,1),   0 0 120px rgba(247,201,72,0.7), 0 0 200px rgba(255,220,80,0.3); }
 }
 
 @keyframes spin {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
+}
+
+@keyframes progress-fill {
+  from { width: 0%; }
+}
+
+@keyframes badge-appear {
+  from { opacity: 0; transform: scale(0.6); }
+  to   { opacity: 1; transform: scale(1); }
 }

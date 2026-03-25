@@ -43,7 +43,7 @@ export default function App() {
 
     const available  = prizes.filter((p) => p.remain > 0);
     let count        = 0;
-    const TOTAL_CYCLES = 28;
+    const TOTAL_CYCLES = 20;
 
     const tick = () => {
       // 슬롯머신 애니메이션 (로컬에서 표시용으로만 순환)
@@ -54,9 +54,9 @@ export default function App() {
 
       if (count < TOTAL_CYCLES) {
         let delay;
-        if      (count < 8)  delay = 80;
-        else if (count < 18) delay = 60;
-        else                 delay = 80 + (count - 18) * 50;
+        if      (count < 6)  delay = 75;
+        else if (count < 14) delay = 60;
+        else                 delay = 75 + (count - 14) * 45;
         timerRef.current = setTimeout(tick, delay);
       } else {
         // 애니메이션 종료 → 서버에서 실제 추첨 결과 수신
